@@ -2,3 +2,11 @@
 name = "rainwater"
 version = "0.1.0"
 authors = ["Michael Spiegel <michael.m.spiegel@gmail.com>"]
+
+[[bench]]
+name = "benchmark"
+harness = false
+
+[dependencies]
+bencher = "0.1.1"
+rand = "0.3"

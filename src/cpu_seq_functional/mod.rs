@@ -5,7 +5,7 @@ fn scan_max(max: &mut u32, elem: u32) -> Option<u32> {
     Some(*max)
 }
 
-pub fn capacity(heights: Vec<u32>) -> u32 {
+pub fn capacity(heights: &[u32]) -> u32 {
 
     let left_max = heights.iter()
                           .scan(0, |max, &e| scan_max(max, e));
@@ -27,5 +27,5 @@ pub fn capacity(heights: Vec<u32>) -> u32 {
 #[test]
 fn test_capacity() {
     let heights = vec![2, 6, 3, 5, 2, 8, 1, 4, 2, 2, 5, 3, 5, 7, 4, 1];
-    assert_eq!(capacity(heights), 35);
+    assert_eq!(capacity(&heights), 35);
 }

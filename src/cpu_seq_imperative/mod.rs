@@ -18,12 +18,12 @@ fn scan_max_dsc(input: &[u32], output: &mut [u32]) {
     }
 }
 
-pub fn capacity(heights: Vec<u32>) -> u32 {
+pub fn capacity(heights: &[u32]) -> u32 {
     let len = heights.len();
     let mut lmax = vec![0; len];
     let mut rmax = vec![0; len];
-    scan_max_asc(&heights, &mut lmax);
-    scan_max_dsc(&heights, &mut rmax);
+    scan_max_asc(heights, &mut lmax);
+    scan_max_dsc(heights, &mut rmax);
     let mut sum = 0;
     for i in 0..len {
         let min = cmp::min(lmax[i], rmax[i]);
@@ -36,5 +36,5 @@ pub fn capacity(heights: Vec<u32>) -> u32 {
 #[test]
 fn test_capacity() {
     let heights = vec![2, 6, 3, 5, 2, 8, 1, 4, 2, 2, 5, 3, 5, 7, 4, 1];
-    assert_eq!(capacity(heights), 35);
+    assert_eq!(capacity(&heights), 35);
 }
