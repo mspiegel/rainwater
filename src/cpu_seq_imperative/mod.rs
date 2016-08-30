@@ -1,32 +1,18 @@
 use std::cmp;
 
-fn scan_max_asc(input: &[u32], output: &mut [u32]) {
-    let len = input.len();
-    let mut max = 0;
-    for i in 0..len {
-        max = cmp::max(max, input[i]);
-        output[i] = max;
-    }
-}
-
-fn scan_max_dsc(input: &[u32], output: &mut [u32]) {
-    let len = input.len();
-    let mut max = 0;
-    for i in (0..len).rev() {
-        max = cmp::max(max, input[i]);
-        output[i] = max;
-    }
-}
-
 pub fn capacity(heights: &[u32]) -> u32 {
     let len = heights.len();
-    let mut lmax = vec![0; len];
-    let mut rmax = vec![0; len];
-    scan_max_asc(heights, &mut lmax);
-    scan_max_dsc(heights, &mut rmax);
+    let mut rmax = heights.to_vec();
+    let mut max = 0;
+    for i in (0..len).rev()  {
+        max = cmp::max(max, rmax[i]);
+        rmax[i] = max;
+    }
+    let mut lmax = 0;
     let mut sum = 0;
     for i in 0..len {
-        let min = cmp::min(lmax[i], rmax[i]);
+        lmax = cmp::max(lmax, heights[i]);
+        let min = cmp::min(lmax, rmax[i]);
         let delta = min - heights[i];
         sum += delta;
     }
