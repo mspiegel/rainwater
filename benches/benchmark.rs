@@ -14,19 +14,19 @@ fn gen_heights() -> Vec<u32> {
     random.gen_iter::<u32>().take(100_000).map(|v| v % 1024).collect::<Vec<u32>>()
 }
 
-fn cpu_scan_seq_imperative(bench: &mut Bencher) {
+fn cpu_scan_imperative(bench: &mut Bencher) {
     let heights = gen_heights();
 
     bench.iter(|| {
-        cpu_scan_seq_imperative::capacity(&heights)
+        cpu_scan_imperative::capacity(&heights)
     });
 }
 
-fn cpu_scan_seq_functional(bench: &mut Bencher) {
+fn cpu_scan_functional(bench: &mut Bencher) {
     let heights = gen_heights();
 
     bench.iter(|| {
-        cpu_scan_seq_functional::capacity(&heights)
+        cpu_scan_functional::capacity(&heights)
     });
 }
 
@@ -38,5 +38,5 @@ fn cpu_scan_rayon(bench: &mut Bencher) {
     });
 }
 
-benchmark_group!(benches, cpu_scan_seq_imperative, cpu_scan_seq_functional, cpu_scan_rayon);
+benchmark_group!(benches, cpu_scan_imperative, cpu_scan_functional, cpu_scan_rayon);
 benchmark_main!(benches);
