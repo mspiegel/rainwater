@@ -1,34 +1,35 @@
 #[macro_use]
 
 extern crate bencher;
-extern crate rand;
-
 extern crate rainwater;
 
 use bencher::Bencher;
-use rand::{Rng, SeedableRng, StdRng};
 
-use rainwater::{cpu_seq_imperative,cpu_seq_functional};
+use rainwater::*;
 
-fn cpu_seq_imperative(bench: &mut Bencher) {
-    let seed: &[_] = &[1, 2, 3, 4];
-    let mut random: StdRng = SeedableRng::from_seed(seed);
-    let heights: Vec<u32> = random.gen_iter().take(1000).collect();
+fn cpu_scan_seq_imperative(bench: &mut Bencher) {
+    let heights = vec![1; 100_000];
 
     bench.iter(|| {
-        cpu_seq_imperative::capacity(&heights)
+        cpu_scan_seq_imperative::capacity(&heights)
     });
 }
 
-fn cpu_seq_functional(bench: &mut Bencher) {
-    let seed: &[_] = &[1, 2, 3, 4];
-    let mut random: StdRng = SeedableRng::from_seed(seed);
-    let heights: Vec<u32> = random.gen_iter().take(1000).collect();
+fn cpu_scan_seq_functional(bench: &mut Bencher) {
+    let heights = vec![1; 100_000];
 
     bench.iter(|| {
-        cpu_seq_functional::capacity(&heights)
+        cpu_scan_seq_functional::capacity(&heights)
     });
 }
 
-benchmark_group!(benches, cpu_seq_imperative, cpu_seq_functional);
+fn cpu_scan_rayon(bench: &mut Bencher) {
+    let heights = vec![1; 100_000];
+
+    bench.iter(|| {
+        cpu_scan_rayon::capacity(&heights, 32)
+    });
+}
+
+benchmark_group!(benches, cpu_scan_seq_imperative, cpu_scan_seq_functional, cpu_scan_rayon);
 benchmark_main!(benches);

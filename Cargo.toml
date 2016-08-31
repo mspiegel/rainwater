@@ -3,10 +3,19 @@ name = "rainwater"
 version = "0.1.0"
 authors = ["Michael Spiegel <michael.m.spiegel@gmail.com>"]
 
+[dependencies]
+bencher = "0.1.1"
+itertools = "0.4.17"
+rand = "0.3"
+rayon = { git = "https://github.com/nikomatsakis/rayon" }
+
+[profile.release]
+debug = true
+
 [[bench]]
 name = "benchmark"
 harness = false
 
-[dependencies]
-bencher = "0.1.1"
-rand = "0.3"
+[[bin]]
+name = "rayon"
+path = "src/bin/rayon.rs"

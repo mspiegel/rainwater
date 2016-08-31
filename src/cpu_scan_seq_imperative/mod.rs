@@ -4,7 +4,7 @@ pub fn capacity(heights: &[u32]) -> u32 {
     let len = heights.len();
     let mut rmax = heights.to_vec();
     let mut max = 0;
-    for i in (0..len).rev()  {
+    for i in (0..len).rev() {
         max = cmp::max(max, rmax[i]);
         rmax[i] = max;
     }
