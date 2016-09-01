@@ -17,15 +17,15 @@ fn scan(elements: &mut Vec<u32>, numthreads: usize) {
     let chunksize = len / numthreads;
     let mut heads = vec![];
     elements.par_chunks(chunksize)
-        .weight_max()
-        .map(|chunk| chunk.iter().fold(0, |acc, &x| cmp::max(acc, x)))
-        .collect_into(&mut heads);
+            .weight_max()
+            .map(|chunk| chunk.iter().fold(0, |acc, &x| cmp::max(acc, x)))
+            .collect_into(&mut heads);
     heads.insert(0, 0);
     seq_scan(&mut heads, 0);
     elements.par_chunks_mut(chunksize)
-        .weight_max()
-        .enumerate()
-        .for_each(|(index, chunk)| seq_scan(chunk, heads[index]));
+            .weight_max()
+            .enumerate()
+            .for_each(|(index, chunk)| seq_scan(chunk, heads[index]));
 }
 
 pub fn capacity(heights: &[u32], numthreads: usize) -> u32 {
@@ -33,14 +33,15 @@ pub fn capacity(heights: &[u32], numthreads: usize) -> u32 {
     let mut lmax = heights.to_vec();
     let mut rmax = heights.to_vec();
     rmax.reverse();
-    rayon::join(|| scan(&mut lmax, numthreads), || scan(&mut rmax, numthreads));
+    rayon::join(|| scan(&mut lmax, numthreads),
+                || scan(&mut rmax, numthreads));
     heights.par_iter()
-        .enumerate()
-        .map(|(i, &height)| {
-            let min = cmp::min(lmax[i], rmax[tail - i]);
-            min - height
-        })
-        .sum()
+           .enumerate()
+           .map(|(i, &height)| {
+               let min = cmp::min(lmax[i], rmax[tail - i]);
+               min - height
+           })
+           .sum()
 }
 
 

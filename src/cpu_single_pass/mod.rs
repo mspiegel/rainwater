@@ -31,7 +31,6 @@ struct State {
 }
 
 impl State {
-
     fn step(&mut self) {
         if self.forward {
             self.index += 1;
@@ -42,9 +41,17 @@ impl State {
 
     fn next(heights: &[u32], lmax: usize, rmax: usize) -> State {
         if heights[lmax] <= heights[rmax] {
-            State{index: lmax + 1, forward: true, max: heights[lmax]}
+            State {
+                index: lmax + 1,
+                forward: true,
+                max: heights[lmax],
+            }
         } else {
-            State{index: rmax - 1, forward: false, max: heights[rmax]}
+            State {
+                index: rmax - 1,
+                forward: false,
+                max: heights[rmax],
+            }
         }
     }
 }
