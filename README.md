@@ -17,7 +17,7 @@ that is trapped by the histogram.
 The key insight to solving this problem is to note that the amount of water
 at position _i_ is computed using the max of all heights to the left
 and the max of all heights to the right. More precisely the
-amount of water at position _i_ is equal to _min(left-max, right-max) -
+amount of water at position _i_ is equal to _min(leftmax, rightmax) -
 height[i]_.
 
 ### Scan Operation: Imperative Style
@@ -47,10 +47,29 @@ a second array of equal length to store the right-to-left maximum values.
 
 [cpu_scan_rayon](/src/cpu_scan_rayon/mod.rs). This implementation uses the
 [rayon](https://github.com/nikomatsakis/rayon) data parallel library for rust.
+The input array is divided into chunks that are distributed among the
+processors. To perform a parallel scan computation the array must be traversed
+twice. In the first traversal the maximum value of each chunk is computed.
+In the second traversal the prefix max of each chunk is computed using the
+maximum value of the chunk's neighbor that was calculated in the first
+traversal.
+
+This solution requires five passes over the array and the allocation of
+a second and third array to store the prefix max results. The traversals
+of the array are divided by the number of processors.
 
 ### Single Pass
 
-[cpu_single_pass](/src/cpu_single_pass/mod.rs).
+[cpu_single_pass](/src/cpu_single_pass/mod.rs). This implementation
+requires only a single pass over the input array. How do we do such a magical
+thing? Begin by computing the local maximum from the left and right ends
+of the array. Now recall that that the height of the water is calculated
+as the minimum of the left and right maxima. This implies that the smaller
+of the left maxima and the right maxima must be the level of the water for
+either the left side or the right side of the array. Begin traversing the
+array from the smaller side into another local maxima is reached. Repeat
+this process until your left and right maxima converge in the middle
+of the array.
 
 ### Benchmarks
 
