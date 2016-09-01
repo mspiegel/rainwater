@@ -8,7 +8,7 @@ fn left_max(heights: &[u32]) -> usize {
             return i - 1;
         }
     }
-    return len;
+    len
 }
 
 fn right_max(heights: &[u32]) -> usize {
@@ -21,7 +21,7 @@ fn right_max(heights: &[u32]) -> usize {
             return i + 1;
         }
     }
-    return len;
+    len
 }
 
 struct State {
