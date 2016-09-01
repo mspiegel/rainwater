@@ -38,5 +38,13 @@ fn cpu_scan_rayon(bench: &mut Bencher) {
     });
 }
 
-benchmark_group!(benches, cpu_scan_imperative, cpu_scan_functional, cpu_scan_rayon);
+fn cpu_single_pass(bench: &mut Bencher) {
+    let heights = gen_heights();
+
+    bench.iter(|| {
+        cpu_single_pass::capacity(&heights)
+    });
+}
+
+benchmark_group!(benches, cpu_scan_imperative, cpu_scan_functional, cpu_scan_rayon, cpu_single_pass);
 benchmark_main!(benches);
