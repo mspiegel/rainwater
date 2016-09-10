@@ -22,7 +22,7 @@ height[i]_.
 
 ### Scan Operation: Imperative Style
 
-[cpu_scan_imperative](/src/cpu_scan_imperative/mod.rs). This is the most
+[scan_imperative](/src/scan_imperative/mod.rs). This is the most
 straightforward solution. Traverse the array from
 left to right and compute the prefix maximum of the array. Traverse the
 array from right to left to compute the suffix maximum of the array.
@@ -37,7 +37,7 @@ a second array of equal length to store the right-to-left maximum values.
 
 ### Scan Operation: Functional Style
 
-[cpu_scan_functional](/src/cpu_scan_functional/mod.rs). This is a rewrite of
+[scan_functional](/src/scan_functional/mod.rs). This is a rewrite of
 the previous approach using a functional style of programming.
 
 This solution requires two passes over the array and the allocation of
@@ -45,7 +45,7 @@ a second array of equal length to store the right-to-left maximum values.
 
 ### Scan Operation: Data Parallel
 
-[cpu_scan_rayon](/src/cpu_scan_rayon/mod.rs). This implementation uses the
+[scan_rayon](/src/scan_rayon/mod.rs). This implementation uses the
 [rayon](https://github.com/nikomatsakis/rayon) data parallel library for rust.
 The input array is divided into chunks that are distributed among the
 processors. To perform a parallel scan computation the array must be traversed
@@ -60,7 +60,7 @@ of the array are divided by the number of processors.
 
 ### Single Pass
 
-[cpu_single_pass](/src/cpu_single_pass/mod.rs). This implementation
+[onepass_imperative](/src/onepass_imperative/mod.rs). This implementation
 requires only a single pass over the input array. How do we do such a magical
 thing? Begin by computing the local maximum from the left and right ends
 of the array. Now recall that that the height of the water is calculated
