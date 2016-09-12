@@ -29,12 +29,16 @@ fn scan(elements: &mut Vec<u32>, numthreads: usize) {
 }
 
 pub fn capacity(heights: &[u32], numthreads: usize) -> u32 {
-    let tail = heights.len() - 1;
     let mut lmax = heights.to_vec();
     let mut rmax = heights.to_vec();
     rmax.reverse();
-    rayon::join(|| scan(&mut lmax, numthreads),
-                || scan(&mut rmax, numthreads));
+    capacity_inner(heights, &mut lmax, &mut rmax, numthreads)
+}
+
+pub fn capacity_inner(heights: &[u32], lmax: &mut Vec<u32>, rmax: &mut Vec<u32>, numthreads: usize) -> u32 {
+    let tail = heights.len() - 1;
+    rayon::join(|| scan(lmax, numthreads),
+                || scan(rmax, numthreads));
     heights.par_iter()
            .enumerate()
            .map(|(i, &height)| {
@@ -43,6 +47,7 @@ pub fn capacity(heights: &[u32], numthreads: usize) -> u32 {
            })
            .sum()
 }
+
 
 
 #[test]
