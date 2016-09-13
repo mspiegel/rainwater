@@ -83,18 +83,18 @@ fn do_capacity(heights: &[u32], pivots: &[usize], bar: Bar, range: Range<usize>)
         do_capacity_seq(heights, bar, range)
     } else {
         let mut max = 0;
-        let mut pivot_index = 0;
+        let mut pindex = 0;
         for i in 0..pivots.len() {
             let next = pivots[i];
             let height = heights[next];
             if height > max {
                 max = height;
-                pivot_index = i;
+                pindex = i;
             }
         }
-        let index = pivots[pivot_index];
-        let lpivot = &pivots[..pivot_index];
-        let rpivot = &pivots[(pivot_index + 1)..];
+        let index = pivots[pindex];
+        let lpivot = &pivots[..pindex];
+        let rpivot = &pivots[(pindex + 1)..];
         let lrange = (range.start)..index;
         let rrange = index..(range.end);
         do_capacity(heights,
@@ -110,13 +110,7 @@ fn do_capacity(heights: &[u32], pivots: &[usize], bar: Bar, range: Range<usize>)
 
 fn do_capacity_seq(heights: &[u32], bar: Bar, range: Range<usize>) -> u32 {
     let max = cmp::min(bar.left, bar.right);
-    let mut capacity = 0;
-    for i in range {
-        if max > heights[i] {
-            capacity += max - heights[i];
-        }
-    }
-    capacity
+    heights[range].iter().filter(|&x| *x < max).map(|x| max - x).sum()
 }
 
 #[test]
