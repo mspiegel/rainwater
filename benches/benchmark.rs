@@ -64,9 +64,18 @@ fn onepass_imperative(bench: &mut Bencher) {
     });
 }
 
+fn recursive(bench: &mut Bencher) {
+    let heights = gen_heights();
+
+    bench.iter(|| {
+        recursive::capacity(&heights, 32)
+    });
+}
+
 benchmark_group!(benches,
     scan_imperative, scan_imperative_inner,
     scan_functional,
     scan_rayon, scan_rayon_inner,
-    onepass_imperative);
+    onepass_imperative,
+    recursive);
 benchmark_main!(benches);

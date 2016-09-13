@@ -35,10 +35,13 @@ pub fn capacity(heights: &[u32], numthreads: usize) -> u32 {
     capacity_inner(heights, &mut lmax, &mut rmax, numthreads)
 }
 
-pub fn capacity_inner(heights: &[u32], lmax: &mut Vec<u32>, rmax: &mut Vec<u32>, numthreads: usize) -> u32 {
+pub fn capacity_inner(heights: &[u32],
+                      lmax: &mut Vec<u32>,
+                      rmax: &mut Vec<u32>,
+                      numthreads: usize)
+                      -> u32 {
     let tail = heights.len() - 1;
-    rayon::join(|| scan(lmax, numthreads),
-                || scan(rmax, numthreads));
+    rayon::join(|| scan(lmax, numthreads), || scan(rmax, numthreads));
     heights.par_iter()
            .enumerate()
            .map(|(i, &height)| {
@@ -47,8 +50,6 @@ pub fn capacity_inner(heights: &[u32], lmax: &mut Vec<u32>, rmax: &mut Vec<u32>,
            })
            .sum()
 }
-
-
 
 #[test]
 fn test_capacity() {

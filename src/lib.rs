@@ -5,3 +5,4 @@ pub mod scan_imperative;
 pub mod scan_functional;
 pub mod scan_rayon;
 pub mod onepass_imperative;
+pub mod recursive;
