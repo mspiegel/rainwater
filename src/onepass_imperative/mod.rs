@@ -1,29 +1,3 @@
-fn left_max(heights: &[u32]) -> usize {
-    let len = heights.len();
-    let mut max = 0;
-    for i in 0..len {
-        if heights[i] > max {
-            max = heights[i];
-        } else {
-            return i - 1;
-        }
-    }
-    len
-}
-
-fn right_max(heights: &[u32]) -> usize {
-    let len = heights.len();
-    let mut max = 0;
-    for i in (0..len).rev() {
-        if heights[i] > max {
-            max = heights[i];
-        } else {
-            return i + 1;
-        }
-    }
-    len
-}
-
 struct State {
     index: usize,
     forward: bool,
@@ -61,11 +35,8 @@ impl State {
 pub fn capacity(heights: &[u32]) -> u32 {
     let len = heights.len();
     let mut capacity = 0;
-    let mut lmax = left_max(heights);
-    let mut rmax = right_max(heights);
-    if lmax == len || rmax == len {
-        return 0;
-    }
+    let mut lmax = 0;
+    let mut rmax = len - 1;
     let mut state = State::next(heights, lmax, rmax);
     while (lmax < state.index) && (state.index < rmax) {
         if state.max >= heights[state.index] {
